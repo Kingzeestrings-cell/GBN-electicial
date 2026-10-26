@@ -1,0 +1,755 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GBN Electrical | Business Documents</title>
+<style>
+:root {
+  --navy: #082b62;
+  --blue: #0876d1;
+  --gold: #e6a600;
+  --ink: #17243a;
+  --muted: #65738a;
+  --line: #dbe3ee;
+  --bg: #f3f6fb;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  font: 15px/1.45 Arial, Helvetica, sans-serif;
+  color: var(--ink);
+}
+button, input, textarea, select { font: inherit; }
+button {
+  cursor: pointer;
+  border: 0;
+  border-radius: 9px;
+  padding: 11px 14px;
+  font-weight: 700;
+}
+.app { max-width: 1250px; margin: auto; padding: 18px; }
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background: white;
+  padding: 16px;
+  border-radius: 16px;
+  box-shadow: 0 5px 22px #102b4d12;
+}
+.brandtext h1 { margin: 0; color: var(--navy); font-size: 24px; }
+.brandtext p { margin: 3px 0; color: var(--muted); }
+.topactions { margin-left: auto; }
+.profileUpload {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  background: #edf3fb;
+  color: var(--navy);
+}
+.profileCircle {
+  width: 75px;
+  height: 75px;
+  border: 2px dashed #b9c8dc;
+  border-radius: 50%;
+  background: white;
+  display: grid;
+  place-items: center;
+  position: relative;
+  overflow: visible;
+}
+.profileCircle img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 50%;
+}
+.plus {
+  position: absolute;
+  bottom: -3px;
+  right: -3px;
+  background: var(--gold);
+  border: 2px solid white;
+  color: var(--navy);
+  width: 27px;
+  height: 27px;
+  border-radius: 50%;
+  font-size: 21px;
+  line-height: 21px;
+  text-align: center;
+}
+.layout {
+  display: grid;
+  grid-template-columns: 350px minmax(0,1fr);
+  gap: 18px;
+  margin-top: 18px;
+}
+.panel, .previewWrap {
+  background: white;
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 5px 22px #102b4d0b;
+  min-width: 0;
+}
+.panel h2 { font-size: 18px; margin: 0 0 12px; color: var(--navy); }
+.field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 11px; }
+.field label { font-size: 12px; font-weight: bold; color: #52627a; }
+.field input, .field textarea, .field select {
+  width: 100%;
+  border: 1px solid #d5deea;
+  border-radius: 8px;
+  padding: 10px;
+  background: white;
+  min-width: 0;
+}
+.field textarea { min-height: 65px; resize: vertical; }
+.section { border-top: 1px solid var(--line); padding-top: 14px; margin-top: 14px; }
+.tabs { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 14px; }
+.tab { background: #eaf0f8; color: var(--navy); }
+.tab.active { background: var(--navy); color: white; }
+.primary { background: var(--navy); color: white; }
+.gold { background: var(--gold); color: #171717; }
+.soft { background: #eaf1fb; color: var(--navy); }
+.hint {
+  background: #fff9e7;
+  border: 1px solid #f2dfa1;
+  padding: 10px;
+  border-radius: 9px;
+  font-size: 12px;
+  color: #624c10;
+  margin: 10px 0;
+}
+.small { font-size: 12px; color: var(--muted); }
+.itemrow {
+  display: grid;
+  grid-template-columns: minmax(80px,1fr) 54px 80px 32px;
+  gap: 5px;
+  align-items: center;
+  margin: 7px 0;
+}
+.itemrow input {
+  width: 100%;
+  min-width: 0;
+  padding: 8px 5px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+}
+.remove { padding: 7px; background: #fff0f0; color: #9c1c1c; }
+.previewWrap { overflow: auto; }
+.paper {
+  max-width: 800px;
+  margin: auto;
+  background: white;
+  border: 1px solid #e0e6ef;
+  padding: 30px;
+  min-height: 720px;
+  color: #1b2638;
+}
+.docHead {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  border-bottom: 4px solid var(--gold);
+  padding-bottom: 18px;
+}
+.docBrand { display: flex; gap: 13px; align-items: center; }
+.docLogo { width: 115px; height: 100px; object-fit: contain; }
+.docBrand h2 { margin: 0; font-size: 24px; color: var(--navy); }
+.docBrand p { margin: 2px 0; color: #56657b; overflow-wrap: anywhere; }
+.docTitle { text-align: right; }
+.docTitle h1 { margin: 0; color: var(--navy); font-size: 28px; letter-spacing: 1px; }
+.docTitle strong { display: block; margin-top: 7px; }
+.docMeta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin: 24px 0;
+}
+.docMeta h3 {
+  font-size: 11px;
+  color: #66748a;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0 0 7px;
+}
+.docMeta p { margin: 3px 0; overflow-wrap: anywhere; }
+.docTable { width: 100%; border-collapse: collapse; margin: 20px 0; }
+.docTable th {
+  background: var(--navy);
+  color: white;
+  text-align: left;
+  padding: 10px 8px;
+  font-size: 12px;
+}
+.docTable td {
+  border-bottom: 1px solid #e1e7ef;
+  padding: 10px 8px;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+.num { text-align: right; white-space: nowrap; }
+.totals { width: min(100%,330px); margin-left: auto; }
+.totalrow { display: flex; justify-content: space-between; padding: 6px 0; gap: 12px; }
+.grand {
+  border-top: 2px solid var(--gold);
+  margin-top: 5px;
+  padding-top: 10px;
+  font-size: 19px;
+  font-weight: 800;
+  color: var(--navy);
+}
+.paymentBox {
+  margin-top: 24px;
+  padding: 14px;
+  background: #f5f8fc;
+  border-left: 4px solid var(--gold);
+}
+.receiptStamp {
+  display: inline-block;
+  border: 2px solid #13814a;
+  color: #13814a;
+  font-weight: 800;
+  padding: 5px 12px;
+  border-radius: 4px;
+  margin-top: 8px;
+}
+.docFooter {
+  border-top: 1px solid #dce4ee;
+  margin-top: 32px;
+  padding-top: 14px;
+  text-align: center;
+  font-size: 12px;
+  color: #46556a;
+}
+.docFooter strong {
+  display: block;
+  color: var(--navy);
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+.actions { display: flex; gap: 8px; flex-wrap: wrap; margin: 14px 0; }
+.status { font-size: 12px; color: #1c7148; margin-top: 8px; }
+@media(max-width:850px) {
+  .layout { grid-template-columns: 1fr; }
+  .topbar { flex-wrap: wrap; }
+  .topactions { margin-left: 0; }
+  .paper { padding: 17px; }
+  .docHead { flex-direction: column; }
+  .docTitle { text-align: left; }
+  .docMeta { gap: 12px; }
+}
+@media print {
+  body { background: white; }
+  .topbar, .panel { display: none !important; }
+  .app { padding: 0; }
+  .layout { display: block; margin: 0; }
+  .previewWrap { box-shadow: none; padding: 0; }
+  .paper { border: 0; max-width: none; padding: 12mm; min-height: auto; }
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+<header class="topbar">
+  <div class="brandtext">
+    <h1 id="headerBrand">GBN Electrical</h1>
+    <p>Estimates · Invoices · Receipts</p>
+    <div class="small">Professional business documents</div>
+  </div>
+  <div class="topactions">
+    <button class="profileUpload" onclick="document.getElementById('logoUpload').click()">
+      <span class="profileCircle" id="profileCircle">
+        <span id="logoPlaceholder">Add logo</span>
+        <span class="plus">+</span>
+      </span>
+      <span>Change business logo</span>
+    </button>
+    <input id="logoUpload" type="file" accept="image/*" hidden>
+  </div>
+</header>
+
+<div class="layout">
+<aside class="panel">
+  <h2>Document builder</h2>
+
+  <div class="tabs">
+    <button class="tab active" data-type="Estimate" onclick="setType('Estimate')">Estimate page</button>
+    <button class="tab" data-type="Invoice" onclick="setType('Invoice')">Invoice page</button>
+    <button class="tab" data-type="Receipt" onclick="setType('Receipt')">Receipt page</button>
+  </div>
+
+  <div class="hint" id="pageIntro">
+    Prepare a quotation before the customer approves the work.
+  </div>
+
+  <div class="field">
+    <label>Business name</label>
+    <input id="brand" value="GBN Electrical">
+  </div>
+  <div class="field">
+    <label>Business phone numbers</label>
+    <input id="businessPhones" value="0548387787 / 0559609441">
+  </div>
+  <div class="field">
+    <label>Business address (optional)</label>
+    <input id="businessAddress" placeholder="Enter business address">
+  </div>
+  <div class="field">
+    <label>Business email (optional)</label>
+    <input id="businessEmail" placeholder="Enter business email">
+  </div>
+
+  <div class="section">
+    <h2>Customer details</h2>
+    <div class="field">
+      <label>Customer name</label>
+      <input id="customer" placeholder="Customer's full name">
+    </div>
+    <div class="field">
+      <label>Customer WhatsApp number</label>
+      <input id="whatsapp" type="tel" placeholder="e.g. 0241234567">
+    </div>
+    <div class="field">
+      <label>Document number</label>
+      <input id="docNo">
+    </div>
+    <div class="field">
+      <label>Issue date</label>
+      <input id="issueDate" type="date">
+    </div>
+    <div class="field" id="dueWrap">
+      <label id="dueLabel">Estimate valid until</label>
+      <input id="dueDate" type="date">
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Items and services</h2>
+    <div class="small">Enter each item, quantity and unit price.</div>
+    <div id="itemsEditor"></div>
+    <button class="soft" onclick="addItem()">+ Add item</button>
+  </div>
+
+  <div class="section">
+    <h2>Amounts and payment</h2>
+    <div class="field">
+      <label>Discount (GH₵)</label>
+      <input id="discount" type="number" min="0" step=".01" value="0">
+    </div>
+    <div class="field">
+      <label>Tax / extra charge (GH₵)</label>
+      <input id="tax" type="number" min="0" step=".01" value="0">
+    </div>
+    <div class="field">
+      <label id="paidLabel">Amount already paid (GH₵)</label>
+      <input id="paid" type="number" min="0" step=".01" value="0">
+    </div>
+    <div class="field" id="receiptRefWrap" style="display:none">
+      <label>Receipt payment reference</label>
+      <input id="receiptRef" placeholder="Mobile Money transaction reference">
+    </div>
+    <div class="field">
+      <label>Payment method</label>
+      <select id="paymentMethod">
+        <option>Cash</option>
+        <option>Mobile Money</option>
+        <option>Bank transfer</option>
+        <option>Card</option>
+        <option>Other</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Notes / payment details</label>
+      <textarea id="notes" placeholder="Optional notes or payment terms"></textarea>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Send or copy</h2>
+    <div class="actions">
+      <button class="primary" onclick="copyDocument()">Copy text</button>
+      <button class="gold" onclick="openWhatsApp()">WhatsApp</button>
+      <button class="soft" onclick="window.print()">Print / Save PDF</button>
+    </div>
+    <div class="hint">
+      Copy text for staff to paste into another app. To send a designed PDF, print/save the document and attach the PDF in WhatsApp.
+    </div>
+    <div id="status" class="status" aria-live="polite"></div>
+  </div>
+</aside>
+
+<main class="previewWrap">
+<div class="paper">
+  <div class="docHead">
+    <div class="docBrand">
+      <img class="docLogo" id="docLogo" alt="Business logo" style="display:none">
+      <div>
+        <h2 id="pBrand">GBN Electrical</h2>
+        <p id="pAddress"></p>
+        <p id="pPhones">0548387787 / 0559609441</p>
+        <p id="pEmail"></p>
+      </div>
+    </div>
+    <div class="docTitle">
+      <h1 id="pType">ESTIMATE</h1>
+      <strong id="pDocNo"></strong>
+      <div id="pDate"></div>
+      <div id="pDue"></div>
+    </div>
+  </div>
+
+  <div class="docMeta">
+    <div>
+      <h3>Prepared for</h3>
+      <p id="pCustomer">Customer name</p>
+      <p id="pWhatsapp"></p>
+    </div>
+    <div>
+      <h3>Document details</h3>
+      <p id="pReference"></p>
+      <p id="pMethod"></p>
+      <p id="pPaymentRef"></p>
+    </div>
+  </div>
+
+  <table class="docTable">
+    <thead>
+      <tr>
+        <th>Description</th>
+        <th class="num">Qty</th>
+        <th class="num">Unit price</th>
+        <th class="num">Amount</th>
+      </tr>
+    </thead>
+    <tbody id="pItems"></tbody>
+  </table>
+
+  <div class="totals">
+    <div class="totalrow"><span>Subtotal</span><strong id="pSubtotal">GH₵0.00</strong></div>
+    <div class="totalrow"><span>Discount</span><strong id="pDiscount">GH₵0.00</strong></div>
+    <div class="totalrow"><span>Tax / extra charge</span><strong id="pTax">GH₵0.00</strong></div>
+    <div class="totalrow grand"><span>Total</span><strong id="pTotal">GH₵0.00</strong></div>
+    <div class="totalrow"><span>Amount paid / received</span><strong id="pPaid">GH₵0.00</strong></div>
+    <div class="totalrow"><span>Balance due</span><strong id="pBalance">GH₵0.00</strong></div>
+  </div>
+
+  <div class="paymentBox">
+    <b id="pPaymentTitle">Payment information</b>
+    <p id="pNotes">Please contact us if you have any questions.</p>
+    <div id="receiptStamp"></div>
+  </div>
+
+  <footer class="docFooter">
+    <strong id="pFooterBrand">GBN Electrical</strong>
+    <div id="pFooterPhones">0548387787 / 0559609441</div>
+    <div>Thank you for your business.</div>
+  </footer>
+</div>
+</main>
+</div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+
+let docType = "Estimate";
+let items = [{description:"Electrical work / materials", qty:1, price:0}];
+let logoData = "";
+
+const today = new Date();
+
+function dateString(value) {
+  if (!value) return "";
+  const d = new Date(value + "T12:00:00");
+  return isNaN(d) ? "" : d.toLocaleDateString("en-GB", {
+    day:"2-digit", month:"short", year:"numeric"
+  });
+}
+
+function money(value) {
+  return "GH₵" + (Number(value) || 0).toLocaleString("en-GH", {
+    minimumFractionDigits:2, maximumFractionDigits:2
+  });
+}
+
+function nextNo(type) {
+  const key = "gbn-" + type.toLowerCase() + "-counter";
+  let n = Number(localStorage.getItem(key) || 0) + 1;
+  localStorage.setItem(key, n);
+  const prefix = {Estimate:"EST", Invoice:"INV", Receipt:"RCT"}[type];
+  return prefix + "-" + today.getFullYear() + "-" + String(n).padStart(4,"0");
+}
+
+function setType(type) {
+  docType = type;
+
+  document.querySelectorAll(".tab").forEach(button => {
+    button.classList.toggle("active", button.dataset.type === type);
+  });
+
+  $("docNo").value = nextNo(type);
+
+  $("pageIntro").textContent =
+    type === "Estimate"
+      ? "ESTIMATE: Prepare a quotation before the customer approves the work."
+      : type === "Invoice"
+      ? "INVOICE: Issue a bill for work or materials, with a due date and outstanding balance."
+      : "RECEIPT: Record money actually received. Enter the payment amount and payment method.";
+
+  $("paidLabel").textContent =
+    type === "Receipt" ? "Amount received for this receipt (GH₵)" : "Amount already paid (GH₵)";
+
+  $("dueWrap").style.display = type === "Receipt" ? "none" : "";
+  $("dueLabel").textContent = type === "Invoice" ? "Payment due date" : "Estimate valid until";
+  $("receiptRefWrap").style.display = type === "Receipt" ? "" : "none";
+  $("pPaymentTitle").textContent = type === "Receipt" ? "Payment received" : "Payment information";
+
+  render();
+}
+
+function addItem() {
+  items.push({description:"", qty:1, price:0});
+  renderEditor();
+  render();
+}
+
+function esc(value) {
+  return String(value ?? "").replace(/[&<>"']/g, c => ({
+    "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
+  }[c]));
+}
+
+function renderEditor() {
+  $("itemsEditor").innerHTML = items.map((item, i) => `
+    <div class="itemrow">
+      <input aria-label="Item description" placeholder="Item / service"
+        value="${esc(item.description)}"
+        onchange="items[${i}].description=this.value;render()">
+      <input aria-label="Quantity" type="number" min="0" step="any"
+        value="${item.qty}"
+        onchange="items[${i}].qty=Math.max(0,Number(this.value)||0);render()">
+      <input aria-label="Unit price" type="number" min="0" step=".01"
+        value="${item.price}"
+        onchange="items[${i}].price=Math.max(0,Number(this.value)||0);render()">
+      <button class="remove" title="Remove item"
+        onclick="items.splice(${i},1);if(!items.length)items.push({description:'',qty:1,price:0});renderEditor();render()">×</button>
+    </div>
+    <div class="small">Item ${i+1}: quantity × unit price</div>
+  `).join("");
+}
+
+function totals() {
+  const subtotal = items.reduce((sum, item) =>
+    sum + (Number(item.qty)||0) * (Number(item.price)||0), 0);
+  const discount = Math.max(0, Number($("discount").value)||0);
+  const tax = Math.max(0, Number($("tax").value)||0);
+  const total = Math.max(0, subtotal - discount + tax);
+  const paid = Math.max(0, Number($("paid").value)||0);
+  const balance = Math.max(0, total - paid);
+  return {subtotal, discount, tax, total, paid, balance};
+}
+
+function render() {
+  const brand = $("brand").value.trim() || "Business Name";
+  const phones = $("businessPhones").value.trim();
+  const address = $("businessAddress").value.trim();
+  const email = $("businessEmail").value.trim();
+  const customer = $("customer").value.trim();
+  const wa = $("whatsapp").value.trim();
+  const no = $("docNo").value.trim();
+  const issue = $("issueDate").value;
+  const due = $("dueDate").value;
+  const t = totals();
+
+  $("headerBrand").textContent = brand;
+  $("pBrand").textContent = brand;
+  $("pFooterBrand").textContent = brand;
+  $("pPhones").textContent = phones;
+  $("pFooterPhones").textContent = phones;
+  $("pAddress").textContent = address;
+  $("pEmail").textContent = email;
+  $("pType").textContent = docType.toUpperCase();
+  $("pDocNo").textContent = no;
+  $("pDate").textContent = "Date: " + dateString(issue);
+  $("pDue").textContent = due
+    ? (docType === "Estimate" ? "Valid until: " : "Due date: ") + dateString(due)
+    : "";
+
+  $("pCustomer").textContent = customer || "Customer name";
+  $("pWhatsapp").textContent = wa ? "WhatsApp: " + wa : "";
+  $("pReference").textContent = "Reference: " + no;
+  $("pMethod").textContent = "Payment method: " + $("paymentMethod").value;
+
+  $("pPaymentRef").textContent =
+    docType === "Receipt" && $("receiptRef").value.trim()
+      ? "Payment reference: " + $("receiptRef").value.trim()
+      : "";
+
+  $("pItems").innerHTML = items.map(item => `
+    <tr>
+      <td>${esc(item.description || "—")}</td>
+      <td class="num">${Number(item.qty)||0}</td>
+      <td class="num">${money(item.price)}</td>
+      <td class="num">${money((Number(item.qty)||0)*(Number(item.price)||0))}</td>
+    </tr>
+  `).join("");
+
+  $("pSubtotal").textContent = money(t.subtotal);
+  $("pDiscount").textContent = "− " + money(t.discount);
+  $("pTax").textContent = money(t.tax);
+  $("pTotal").textContent = money(t.total);
+  $("pPaid").textContent = money(t.paid);
+  $("pBalance").textContent = money(t.balance);
+
+  $("pNotes").textContent = $("notes").value.trim() ||
+    (docType === "Receipt"
+      ? "Payment received with thanks."
+      : "Please contact us if you have any questions.");
+
+  $("receiptStamp").innerHTML = docType === "Receipt"
+    ? '<span class="receiptStamp">PAYMENT RECEIVED</span>'
+    : "";
+
+  $("pPaymentTitle").textContent =
+    docType === "Receipt" ? "Payment received" : "Payment information";
+
+  $("docLogo").style.display = logoData ? "block" : "none";
+  if (logoData) $("docLogo").src = logoData;
+
+  const oldImage = $("profileCircle").querySelector("img");
+  if (logoData) {
+    if (!oldImage) {
+      const img = document.createElement("img");
+      img.alt = "Business logo";
+      img.src = logoData;
+      $("profileCircle").prepend(img);
+    } else {
+      oldImage.src = logoData;
+    }
+    $("logoPlaceholder").style.display = "none";
+  } else {
+    if (oldImage) oldImage.remove();
+    $("logoPlaceholder").style.display = "block";
+  }
+}
+
+function getText() {
+  const t = totals();
+  const brand = $("brand").value.trim() || "Business Name";
+  const phones = $("businessPhones").value.trim();
+
+  const lines = [
+    brand,
+    phones,
+    "",
+    docType.toUpperCase(),
+    "Document number: " + $("docNo").value,
+    "Date: " + dateString($("issueDate").value),
+    $("dueDate").value && docType !== "Receipt"
+      ? (docType === "Estimate" ? "Valid until: " : "Due date: ") + dateString($("dueDate").value)
+      : "",
+    "Customer: " + ($("customer").value.trim() || "Customer"),
+    "WhatsApp: " + $("whatsapp").value.trim(),
+    "",
+    "ITEMS",
+    ...items.map(item =>
+      `${item.description || "Item"} | Qty ${item.qty} × ${money(item.price)} = ${money((Number(item.qty)||0)*(Number(item.price)||0))}`
+    ),
+    "",
+    "Subtotal: " + money(t.subtotal),
+    "Discount: " + money(t.discount),
+    "Tax / extra charge: " + money(t.tax),
+    "TOTAL: " + money(t.total),
+    "Amount paid / received: " + money(t.paid),
+    "BALANCE DUE: " + money(t.balance),
+    "Payment method: " + $("paymentMethod").value,
+    $("receiptRef").value.trim() ? "Payment reference: " + $("receiptRef").value.trim() : "",
+    $("notes").value.trim() ? "Notes: " + $("notes").value.trim() : "",
+    "",
+    "Thank you for your business.",
+    phones
+  ];
+
+  return lines.filter((line, index) =>
+    line !== "" || (index > 0 && lines[index-1] !== "")
+  ).join("\n");
+}
+
+async function copyDocument() {
+  const text = getText();
+  try {
+    await navigator.clipboard.writeText(text);
+    $("status").textContent = "Document text copied. Paste it into WhatsApp or another app.";
+  } catch (error) {
+    const area = document.createElement("textarea");
+    area.value = text;
+    document.body.appendChild(area);
+    area.select();
+    const success = document.execCommand("copy");
+    area.remove();
+    $("status").textContent = success
+      ? "Document text copied."
+      : "Copy was blocked by the browser. Try opening the site over HTTPS.";
+  }
+}
+
+function openWhatsApp() {
+  const raw = $("whatsapp").value.trim();
+  if (!raw) {
+    $("status").textContent = "Enter the customer's WhatsApp number first.";
+    $("whatsapp").focus();
+    return;
+  }
+
+  let number = raw.replace(/\D/g, "");
+  if (number.startsWith("0")) number = "233" + number.slice(1);
+  else if (number.startsWith("00")) number = number.slice(2);
+
+  const url = "https://wa.me/" + number + "?text=" + encodeURIComponent(getText());
+  window.open(url, "_blank", "noopener,noreferrer");
+
+  $("status").textContent =
+    "WhatsApp opened with the message prepared. Review and send it. Attach a PDF manually if required.";
+}
+
+$("logoUpload").addEventListener("change", event => {
+  const file = event.target.files && event.target.files[0];
+  if (!file) return;
+  if (!file.type.startsWith("image/")) {
+    alert("Please select an image file.");
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = () => {
+    logoData = reader.result;
+    try { localStorage.setItem("gbn-logo", logoData); } catch (error) {}
+    render();
+    $("status").textContent = "Logo updated. It appears on the document.";
+  };
+  reader.readAsDataURL(file);
+});
+
+[
+  "brand","businessPhones","businessAddress","businessEmail",
+  "customer","whatsapp","docNo","issueDate","dueDate",
+  "discount","tax","paid","paymentMethod","notes","receiptRef"
+].forEach(id => $(id).addEventListener("input", render));
+
+$("issueDate").value =
+  today.getFullYear() + "-" +
+  String(today.getMonth()+1).padStart(2,"0") + "-" +
+  String(today.getDate()).padStart(2,"0");
+
+try { logoData = localStorage.getItem("gbn-logo") || ""; } catch (error) {}
+
+$("docNo").value = nextNo(docType);
+renderEditor();
+render();
+</script>
+</body>
+</html>
